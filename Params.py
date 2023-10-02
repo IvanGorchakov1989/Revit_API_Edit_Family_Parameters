@@ -18,7 +18,7 @@ def get_parameters(file):
             parameters.append(i.Definition.Name)
     return parameters
 
-def button2click(text, global_files, selectedItem, checked):
+def button2click(text, global_files, selectedItem, checked, progress_bar):
     for file in global_files:
         f_doc = app.OpenDocumentFile(
             DB.FilePath(file),
@@ -41,3 +41,4 @@ def button2click(text, global_files, selectedItem, checked):
                             str(text))
             t.Commit()
         f_doc.Close()
+        progress_bar.PerformStep()
