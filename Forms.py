@@ -4,14 +4,8 @@ clr.AddReference('System.Windows.Forms')
 from System.Windows.Forms import CheckBox, Form, Button, TextBox, ListBox, Label, OpenFileDialog, DialogResult
 clr.AddReference('System.Drawing')
 from System.Drawing import Point, Size
-clr.AddReference('RevitAPI')
-from Autodesk.Revit import DB
 
 from Params import get_parameters, button2click
-
-uiapp = __revit__                          # noqa
-app = __revit__.Application                # noqa
-doc = __revit__.ActiveUIDocument.Document  # noqa
 
 class Window(Form):
     def __init__(self):
