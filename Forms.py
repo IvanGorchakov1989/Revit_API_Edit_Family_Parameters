@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 import clr
 clr.AddReference('System.Windows.Forms')
-from System.Windows.Forms import CheckBox, Form, Button, TextBox, ListBox, Label, OpenFileDialog, DialogResult
+from System.Windows.Forms import CheckBox, Form, Button, TextBox, Label
+from System.Windows.Forms import ListBox, OpenFileDialog, DialogResult, ProgressBar
 clr.AddReference('System.Drawing')
 from System.Drawing import Point, Size
 
@@ -70,20 +71,27 @@ class Window(Form):
         self._btn2.Click += self.Button2Click
 
         self._text5 = Label()
-        self._text5.Size = Size(400, 200)
-        self._text5.Location = Point(int(self.Size.Width / 2 - 200), 450)
         self.Controls.Add(self._text5)
+
+        self._progress_bar = ProgressBar()
+        self._progress_bar.Size = Size(self.Size.Width, 50)
+        self._progress_bar.Minimum = 0
+        self._progress_bar.Step = 1
+        self._progress_bar.Location = Point(0, 470)
+        self.Controls.Add(self._progress_bar)
 
     def Button1Click(self, sender, event_args):
         FD = OpenFileDialog()
         FD.Multiselect = True
         if (FD.ShowDialog() == DialogResult.OK):
             self.global_files = []
+            self.button_1_click = 1
             for s in FD.FileNames:
                 if s not in self.global_files:
                     self.global_files.append(s)
             self._list_box.DataSource = None
             self._list_box.DataSource = self.global_files
+            self._progress_bar.Maximum = len(self.global_files)
             sets_parameters = []
             for glob in self.global_files:
                 sets_parameters.extend(get_parameters(glob))
@@ -94,7 +102,13 @@ class Window(Form):
             button2click(self._text2.Text,
                          self.global_files,
                          self._list_box2.SelectedItem,
-                         self._chk.Checked)
+                         self._chk.Checked,
+                         self._progress_bar)
+            self._text5.Size = Size(150, 20)
+            self._text5.Location = Point(int(self.Size.Width / 2 - 75), 450)
             self._text5.Text = 'Изменения сохранены'
         else:
+            self._text5.Size = Size(400, 20)
+            self._text5.Location = Point(int(self.Size.Width / 2 - 200), 450)
             self._text5.Text = 'Необходимо выбрать параметр и ввести новое значение'
+            
